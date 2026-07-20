@@ -5,6 +5,8 @@ import Dashboard from './page/Dashboard';
 import DetailKamar from './page/DetailKamar';
 import Penghuni from './page/Penghuni';
 import Pembayaran from './page/Pembayaran';
+import RiwayatTransaksi from './page/RiwayatTransaksi';
+import KatalogProperti from './page/KatalogProperti';
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
         <Route path="/detail-kamar" element={<DetailKamar />} />
         <Route path="/penghuni" element={<Penghuni />} />
         <Route path="/pembayaran" element={<Pembayaran />} />
+        <Route path="/riwayat-transaksi" element={<RiwayatTransaksi />} />
       </Routes>
     </Router>
   );

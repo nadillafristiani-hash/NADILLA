@@ -1,163 +1,311 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // <--- PENTING: Untuk navigasi antar halaman
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function DetailKamar() {
+export default function DetailKamar() {
   const navigate = useNavigate();
-  
-  // Data detail Kamar
-  const detailKamar = {
-    no: "123",
-    type: "Deluxe Suite",
-    harga: "Rp 1.850.000 / Bulan",
-    status: "Terisi",
-    ukuran: "4 x 5 Meter",
-    listrik: "Token Mandiri (900 Watt)",
-    
-    penghuni: {
-      nama: "Budi Santoso",
-      kontak: "0812-3456-7890",
-      masuk: "10 Januari 2026",
-      durasi: "6 Bulan (Selesai 10 Juli 2026)",
-      statusKTP: "Terverifikasi"
-    },
 
-    fasilitas: [
-      "Pendingin Ruangan (AC 1 PK)",
-      "Kamar Mandi Dalam (Shower & Water Heater)",
-      "Kasur Springbed Queen Size (160x200)",
-      "Lemari Pakaian 3 Pintu & Meja Kerja",
-      "Koneksi Wi-Fi High-Speed Dedicated",
-      "Balkon Pribadi Hadap Depan"
-    ]
+  // 1. Data Pilihan Properti (Kos Putra, Kos Putri, Kontrakan)
+  const daftarProperti = [
+    {
+      id: "KOS-BAROKAH-01",
+      namaProperti: "Kos Putra Barokah Standar",
+      kategori: "Kos Putra",
+      alamat: "Jl. Sukabirus No. 42, Dayeuhkolot, Bandung (Dekat Kampus Telkom)",
+      hargaPerBulan: 750000,
+      biayaLayanan: 10000,
+      deposit: 100000,
+      gambarUtama: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80",
+      galeri: [
+        "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80"
+      ],
+      deskripsi: "Kamar kos nyaman dan tenang khusus putra, cocok untuk mahasiswa atau pekerja. Lingkungan bersih dengan akses 24 jam, dekat dengan pusat kuliner dan minimarket.",
+      fasilitasKamar: [
+        "Kasur (Spring Bed)",
+        "Lemari Pakaian",
+        "Meja & Kursi Belajar",
+        "Jendela & Ventilasi Bagus",
+        "Stopkontak & WiFi High-Speed"
+      ],
+      fasilitasBersama: [
+        "Kamar Mandi Luar (Clean & Maintained)",
+        "Dapur Bersama + Kompor",
+        "Kulkas Bersama",
+        "Area Parkir Motor Luas",
+        "Jemuran Pakaian"
+      ],
+      aturanKos: [
+        "Akses 24 Jam untuk Penghuni",
+        "Dilarang membawa hewan peliharaan",
+        "Tamu lawan jenis dilarang masuk kamar",
+        "Jaga ketenangan setelah pukul 22.00 WIB"
+      ]
+    },
+    {
+      id: "KOS-MAWAR-02",
+      namaProperti: "Kos Putri Mawar Asri",
+      kategori: "Kos Putri",
+      alamat: "Jl. Sukabirus No. 15, Dayeuhkolot, Bandung (Akses Gerbang Utama)",
+      hargaPerBulan: 850000,
+      biayaLayanan: 10000,
+      deposit: 100000,
+      gambarUtama: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80",
+      galeri: [
+        "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=400&q=80"
+      ],
+      deskripsi: "Kos khusus putri yang sangat aman dan tenang. Dilengkapi sistem keamanan gerbang auto-lock, CCTV 24 jam, serta lingkungan yang bersih dan rapi.",
+      fasilitasKamar: [
+        "Kamar Mandi Dalam",
+        "AC / Pendingin Ruangan",
+        "Kasur Spring Bed & Bantal",
+        "Lemari Baju 2 Pintu",
+        "Meja Rias & Belajar"
+      ],
+      fasilitasBersama: [
+        "Dapur Bersama Lengkap",
+        "WiFi 100Mbps Ultra-Fast",
+        "Dispenser Air Minum",
+        "Mesin Cuci Bersama",
+        "CCTV 24 Jam & Security"
+      ],
+      aturanKos: [
+        "Khusus Penghuni Putri",
+        "Tamu Laki-laki hanya di Ruang Tamu Depan",
+        "Dilarang merokok di area kos",
+        "Pintu Gerbang dikunci pukul 23.00 WIB"
+      ]
+    },
+    {
+      id: "KONTRAKAN-HOUSE-03",
+      namaProperti: "Kontrakan House 2 Kamar",
+      kategori: "Kontrakan",
+      alamat: "Gg. PGA No. 8, Dayeuhkolot, Bandung (Lingkungan Asri)",
+      hargaPerBulan: 2500000,
+      biayaLayanan: 20000,
+      deposit: 500000,
+      gambarUtama: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      galeri: [
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=400&q=80"
+      ],
+      deskripsi: "Rumah kontrakan minimalis 1 lantai dengan 2 kamar tidur pribadi. Sangat cocok untuk sewa kelompok teman/mahasiswa atau keluarga kecil.",
+      fasilitasKamar: [
+        "2 Kamar Tidur Utama",
+        "Ruang Tamu & Ruang Keluarga Luas",
+        "Dapur Pribadi + Sink",
+        "Kamar Mandi Pribadi",
+        "Teras Depan Rumah"
+      ],
+      fasilitasBersama: [
+        "Garasi Mobil & Motor Pribadi",
+        "Kanopi Parkiran",
+        "Air PDAM & Sumur Lancar",
+        "Listrik PLN 1300W (Token)"
+      ],
+      aturanKos: [
+        "Wajib menyerahkan fotokopi KTP",
+        "Menjaga kebersihan lingkungan sekitar",
+        "Dilarang membuat kegaduhan pesta malam",
+        "Iuran sampah & lingkungan ditanggung penyewa"
+      ]
+    }
+  ];
+
+  // 2. State Properti yang Sedang Dipilih (Default: Kos Putra / Index 0)
+  const [selectedProperti, setSelectedProperti] = useState(daftarProperti[0]);
+
+  // State Pilihan Durasi Sewa
+  const [durasiSewa, setDurasiSewa] = useState(1);
+
+  // Kalkulasi Total Biaya Sesuai Properti Aktif
+  const subtotalSewa = selectedProperti.hargaPerBulan * durasiSewa;
+  const totalPembayaran = subtotalSewa + selectedProperti.biayaLayanan + selectedProperti.deposit;
+
+  // Format Rupiah
+  const formatRupiah = (angka) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+  };
+
+  // Kirim data ke Halaman Pembayaran
+  const handleLanjutPembayaran = () => {
+    const dataDikirim = {
+      namaProperti: selectedProperti.namaProperti,
+      tipeKamar: selectedProperti.kategori,
+      hargaSewa: `${formatRupiah(selectedProperti.hargaPerBulan)} / bln`,
+      durasiSewa: `${durasiSewa} Bulan`,
+      tanggalMasuk: "01 Agustus 2026",
+      biayaLayanan: formatRupiah(selectedProperti.biayaLayanan),
+      deposit: formatRupiah(selectedProperti.deposit),
+      totalBayar: formatRupiah(totalPembayaran),
+      gambar: selectedProperti.gambarUtama
+    };
+
+    navigate('/pembayaran', { state: { itemTransaksi: dataDikirim } });
   };
 
   return (
-    <div className="flex min-h-screen bg-[#f3f4f6] font-sans antialiased text-gray-900 selection:bg-black selection:text-white">
+    <div className="min-h-screen bg-[#1A1613] text-white font-sans antialiased pb-20">
       
-      {/* ================= SIDEBAR (KIRI) ================= */}
-      <aside className="hidden md:flex flex-col w-64 bg-black text-white p-6 border-r border-zinc-800 select-none">
-        <div className="flex items-center gap-3 mb-10 border-b border-zinc-800 pb-5">
-          <svg className="w-8 h-8 text-white" viewBox="0 0 100 100" fill="none">
-            <path d="M25 20V80H35V53L55 80H68L45 49L65 20H52L35 43V20H25Z" fill="currentColor" />
-          </svg>
-          <span className="text-sm font-bold tracking-[0.15em] uppercase font-mono text-zinc-200">KAFANA VISTA</span>
-        </div>
-
-        {/* MENU NAVIGASI: Sekarang semuanya dibungkus <Link> agar BISA DIPENCET */}
-        <nav className="flex-1 space-y-1 text-xs font-bold uppercase tracking-wider">
-          
-          <Link 
-            to="/dashboard" 
-            className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded cursor-pointer transition block"
-          >
-            📂 DASHBOARD
-          </Link>
-          
-          {/* Menu Data Kamar sedang aktif */}
-          <div className="flex items-center gap-3 px-4 py-3 bg-zinc-900 text-white border-l-2 border-white rounded shadow-inner font-extrabold cursor-default">
-            🏢 DATA KAMAR
-          </div>
-          
-          <Link 
-            to="/penghuni" 
-            className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded cursor-pointer transition block"
-          >
-            👥 PENGHUNI
-          </Link>
-          
-          <Link 
-            to="/pembayaran" 
-            className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded cursor-pointer transition block"
-          >
-            💳 PEMBAYARAN
-          </Link>
-          
-        </nav>
-
-        <div className="border-t border-zinc-800 pt-4 flex items-center gap-3">
-          <div className="w-8 h-8 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center text-xs text-white font-bold">BS</div>
-          <div>
-            <h4 className="text-xs font-bold">Budi Santoso</h4>
-            <p className="text-[10px] text-zinc-500">Pemilik Properti</p>
-          </div>
-        </div>
-      </aside>
-
-      {/* ================= KONTEN DETAIL (KANAN) ================= */}
-      <main className="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full space-y-8">
+      {/* HEADER PAGE & SELEKTOR PROPERTI */}
+      <div className="max-w-5xl mx-auto px-6 pt-8 pb-4">
         
-        {/* Header Atas */}
-        <div className="flex items-center justify-between border-b border-gray-300 pb-5">
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => navigate('/')} 
-              className="border border-black p-2 rounded hover:bg-black hover:text-white transition cursor-pointer"
-              title="Kembali ke Login"
+        {/* TOMBOL KEMBALI */}
+        <button 
+          onClick={() => navigate(-1)}
+          className="bg-[#FAF8F5] text-[#1A1613] px-4 py-2 font-semibold text-xs tracking-widest uppercase shadow-md hover:bg-[#B48A35] hover:text-white transition-all mb-6 cursor-pointer"
+        >
+          ← KEMBALI
+        </button>
+
+        {/* PILIHAN TAB (KOS PUTRA, KOS PUTRI, KONTRAKAN) */}
+        <div className="flex flex-wrap gap-3 mb-6">
+          {daftarProperti.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSelectedProperti(item)}
+              className={`px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer border ${
+                selectedProperti.id === item.id
+                  ? 'bg-[#B48A35] text-[#1A1613] border-[#B48A35] shadow-lg'
+                  : 'bg-[#14110F] text-stone-300 border-[#8C6943]/40 hover:border-[#B48A35]'
+              }`}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-              </svg>
+              {item.kategori}
             </button>
-            <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-black tracking-tight">Kamar {detailKamar.no}</h1>
-                <span className="px-2.5 py-0.5 border border-black text-[10px] font-bold uppercase tracking-wider bg-black text-white rounded-full">
-                  {detailKamar.status}
-                </span>
-              </div>
-              <p className="text-xs text-gray-600 mt-0.5">Spesifikasi unit dan manajemen penghuni aktif.</p>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Kotak Konten Detail */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white border border-gray-300 rounded p-6 shadow-sm space-y-4">
-              <h3 className="text-xs font-black uppercase tracking-widest border-b border-gray-100 pb-2">Spesifikasi Kamar</h3>
-              <div className="grid grid-cols-2 gap-6 text-xs font-medium">
-                <div>
-                  <p className="text-gray-500 uppercase text-[10px] tracking-wider">Tipe Kamar</p>
-                  <p className="text-sm font-bold mt-0.5">{detailKamar.type}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 uppercase text-[10px] tracking-wider">Harga Sewa</p>
-                  <p className="text-sm font-bold text-zinc-950 mt-0.5">{detailKamar.harga}</p>
-                </div>
-              </div>
+        {/* INFO PROPERTI AKTIF */}
+        <span className="text-xs tracking-widest text-[#B48A35] uppercase font-bold block">
+          {selectedProperti.kategori}
+        </span>
+        <h1 className="text-3xl font-serif tracking-wide text-stone-100">{selectedProperti.namaProperti}</h1>
+        <p className="text-xs text-stone-400 mt-1">📍 {selectedProperti.alamat}</p>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
+        
+        {/* KOLOM KIRI: FOTO, DESKRIPSI, FASILITAS, ATURAN */}
+        <div className="lg:col-span-2 space-y-6">
+          
+          {/* GALERI FOTO */}
+          <div className="space-y-3">
+            <img 
+              src={selectedProperti.gambarUtama} 
+              alt={selectedProperti.namaProperti} 
+              className="w-full h-80 object-cover border border-[#8C6943]/30 shadow-lg"
+            />
+            <div className="grid grid-cols-3 gap-3">
+              {selectedProperti.galeri.map((img, index) => (
+                <img key={index} src={img} alt="Foto Properti" className="h-24 w-full object-cover border border-[#8C6943]/20" />
+              ))}
+            </div>
+          </div>
+
+          {/* DESKRIPSI */}
+          <div className="bg-[#14110F] border border-[#8C6943]/30 p-6 space-y-2">
+            <h3 className="text-lg font-serif text-[#B48A35]">Deskripsi Properti</h3>
+            <p className="text-xs text-stone-300 leading-relaxed">{selectedProperti.deskripsi}</p>
+          </div>
+
+          {/* FASILITAS KAMAR & BERSAMA */}
+          <div className="bg-[#14110F] border border-[#8C6943]/30 p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-sm font-serif text-[#B48A35] mb-3 uppercase tracking-wider font-bold">Fasilitas Kamar</h3>
+              <ul className="space-y-2 text-xs text-stone-300">
+                {selectedProperti.fasilitasKamar.map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-2">✓ {item}</li>
+                ))}
+              </ul>
             </div>
 
-            <div className="bg-white border border-gray-300 rounded p-6 shadow-sm space-y-4">
-              <h3 className="text-xs font-black uppercase tracking-widest border-b border-gray-100 pb-2">Fasilitas Terpasang</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-semibold text-gray-800">
-                {detailKamar.fasilitas.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-black rounded-full"></span>
-                    {item}
-                  </li>
+            <div>
+              <h3 className="text-sm font-serif text-[#B48A35] mb-3 uppercase tracking-wider font-bold">Fasilitas Bersama</h3>
+              <ul className="space-y-2 text-xs text-stone-300">
+                {selectedProperti.fasilitasBersama.map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-2">🏢 {item}</li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <div className="bg-white border border-gray-300 rounded p-6 shadow-sm space-y-6">
-            <h3 className="text-xs font-black uppercase tracking-widest border-b border-gray-200 pb-2">Penghuni Aktif</h3>
-            <div className="space-y-4 text-xs font-medium">
-              <div>
-                <p className="text-gray-500 uppercase text-[10px] tracking-wider">Nama Lengkap</p>
-                <p className="text-sm font-bold text-gray-900 mt-0.5">{detailKamar.penghuni.nama}</p>
+          {/* ATURAN HUNIAN */}
+          <div className="bg-[#14110F] border border-[#8C6943]/30 p-6 space-y-3">
+            <h3 className="text-sm font-serif text-[#B48A35] uppercase tracking-wider font-bold">Aturan Hunian</h3>
+            <ul className="space-y-2 text-xs text-stone-300">
+              {selectedProperti.aturanKos.map((item, idx) => (
+                <li key={idx} className="flex items-center gap-2 text-amber-200/80">⚠️ {item}</li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* KOLOM KANAN: CARD PEMESANAN & RINCIAN HARGA */}
+        <div className="lg:col-span-1">
+          <div className="bg-[#14110F] border border-[#8C6943]/40 p-6 sticky top-8 shadow-2xl space-y-6">
+            
+            <div className="border-b border-[#8C6943]/20 pb-4">
+              <span className="text-xs text-stone-400 block">Harga Sewa:</span>
+              <span className="text-2xl font-serif text-[#B48A35] font-bold">{formatRupiah(selectedProperti.hargaPerBulan)}</span>
+              <span className="text-xs text-stone-400"> / bulan</span>
+            </div>
+
+            {/* PILIHAN DURASI SEWA */}
+            <div className="space-y-2">
+              <label className="text-xs text-stone-300 font-semibold block">Pilih Durasi Sewa:</label>
+              <select 
+                value={durasiSewa} 
+                onChange={(e) => setDurasiSewa(Number(e.target.value))}
+                className="w-full bg-[#1A1613] border border-[#8C6943]/50 text-stone-200 text-xs p-3 focus:outline-none focus:border-[#B48A35]"
+              >
+                <option value={1}>1 Bulan</option>
+                <option value={3}>3 Bulan</option>
+                <option value={6}>6 Bulan</option>
+                <option value={12}>12 Bulan (1 Tahun)</option>
+              </select>
+            </div>
+
+            {/* RINCIAN BIAYA */}
+            <div className="bg-[#1A1613] p-4 border border-[#8C6943]/20 space-y-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-stone-400">Sewa ({durasiSewa} bln):</span>
+                <span>{formatRupiah(subtotalSewa)}</span>
               </div>
-              <div>
-                <p className="text-gray-500 uppercase text-[10px] tracking-wider">Kontak WA</p>
-                <p className="text-sm font-bold text-gray-900 mt-0.5">{detailKamar.penghuni.kontak}</p>
+              <div className="flex justify-between">
+                <span className="text-stone-400">Biaya Layanan:</span>
+                <span>{formatRupiah(selectedProperti.biayaLayanan)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-400">Deposit Jaminan:</span>
+                <span>{formatRupiah(selectedProperti.deposit)}</span>
+              </div>
+              <div className="flex justify-between pt-3 border-t border-[#8C6943]/30 font-bold text-sm text-[#B48A35]">
+                <span>Total Biaya:</span>
+                <span>{formatRupiah(totalPembayaran)}</span>
               </div>
             </div>
+
+            {/* TOMBOL AKSI */}
+            <button 
+              onClick={handleLanjutPembayaran}
+              className="w-full bg-[#B48A35] text-[#1A1613] font-bold py-3 text-xs tracking-widest uppercase hover:bg-[#9a7527] transition-all shadow-md cursor-pointer"
+            >
+              LANJUT KE PEMBAYARAN →
+            </button>
+
+            <p className="text-[10px] text-center text-stone-500">
+              *Kamu bisa memilih metode pembayaran di langkah berikutnya.
+            </p>
+
           </div>
         </div>
 
-      </main>
+      </div>
+
     </div>
   );
 }
-
-export default DetailKamar;

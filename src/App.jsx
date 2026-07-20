@@ -20,7 +20,7 @@ function App() {
         <Route path="/detail-kamar" element={<DetailKamar />} />
         <Route path="/penghuni" element={<Penghuni />} />
         <Route path="/pembayaran" element={<Pembayaran />} />
-        <Route path="/riwayat-transaksi" element={<RiwayatTransaksi />} />
+        <Route path="/riwayat" element={<RiwayatTransaksi />} />
       </Routes>
     </Router>
   );

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Mencoba masuk dengan email: ${email}`);
+    // Arahkan ke halaman dashboard setelah submit
+    navigate('/dashboard');
   };
 
   return (
@@ -39,25 +42,25 @@ function Login() {
 
         {/* SISI KANAN: FORM LOGIN */}
         <div className="flex-1 bg-white p-8 md:p-14 flex flex-col justify-between items-center text-gray-900">
-          <div className="w-full max-w-[380px] mx-auto my-auto space-y-8">
+          <div className="w-full max-w-[380px] mx-auto my-auto space-y-6">
             <div className="text-center space-y-2">
               <h2 className="text-3xl font-extrabold tracking-tight leading-tight">Selamat Datang di <br /> KAFANA VISTA,</h2>
               <p className="text-sm text-gray-700">Platform Kelola Properti Anda.</p>
             </div>
 
-            <div className="flex flex-col items-center text-center space-y-2">
-              <div className="w-20 h-20 bg-white border-[1.5px] border-black rounded-full flex items-center justify-center text-gray-400">
-                <svg className="w-12 h-12 text-gray-800" fill="none" stroke="currentColor" strokeWidth="1.2" viewBox="0 0 24 24">
+            <div className="flex flex-col items-center text-center space-y-1">
+              <div className="w-16 h-16 bg-white border-[1.5px] border-black rounded-full flex items-center justify-center text-gray-400 mb-1">
+                <svg className="w-10 h-10 text-gray-800" fill="none" stroke="currentColor" strokeWidth="1.2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-md font-bold">Budi Santoso</h3>
-                <p className="text-xs text-gray-500">Pemilik</p>
+                <h3 className="text-sm font-bold">Budi Santoso</h3>
+                <p className="text-[11px] text-gray-500">Pemilik</p>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div className="space-y-1">
                 <label className="block text-xs font-bold uppercase">Alamat Email</label>
                 <input 
@@ -82,18 +85,32 @@ function Login() {
                 />
               </div>
 
-              {/* 1. Tombol Masuk Utama */}
-              <button type="submit" className="w-full bg-black text-white py-2.5 text-xs font-bold uppercase tracking-widest rounded hover:bg-zinc-800 transition">
-                MASUK KE DASHBOARD
-              </button>
+              {/* KUMPULAN TOMBOL */}
+              <div className="space-y-2 pt-2">
+                {/* 1. Tombol Masuk Utama */}
+                <button 
+                  type="submit" 
+                  className="w-full bg-black text-white py-2.5 text-xs font-bold uppercase tracking-widest rounded hover:bg-zinc-800 transition cursor-pointer"
+                >
+                  MASUK KE DASHBOARD
+                </button>
 
-              {/* 2. TOMBOL JALAN PINTAS AKSES DETAIL KAMAR */}
-              <Link 
-                to="/detail-kamar" 
-                className="block w-full text-center bg-zinc-100 text-black border border-black py-2.5 text-xs font-bold uppercase tracking-widest rounded hover:bg-zinc-200 transition mt-2"
-              >
-                🔍 CEK DETAIL KAMAR
-              </Link>
+                {/* 2. Tombol Cek Detail Kamar */}
+                <Link 
+                  to="/detail-kamar" 
+                  className="block w-full text-center bg-zinc-100 text-black border border-black py-2.5 text-xs font-bold uppercase tracking-widest rounded hover:bg-zinc-200 transition"
+                >
+                  🔍 CEK DETAIL KAMAR
+                </Link>
+
+                {/* 3. TOMBOL BARU: LIHAT TESTIMONI / KATALOG */}
+                <Link 
+                  to="/testimoni" 
+                  className="block w-full text-center bg-white text-black border border-black py-2.5 text-xs font-bold uppercase tracking-widest rounded hover:bg-zinc-100 transition"
+                >
+                  💬 LIHAT TESTIMONI
+                </Link>
+              </div>
             </form>
 
             <div className="text-center text-xs font-medium">

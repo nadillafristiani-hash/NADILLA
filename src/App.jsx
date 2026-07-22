@@ -7,6 +7,7 @@ import Penghuni from './page/Penghuni';
 import Pembayaran from './page/Pembayaran';
 import RiwayatTransaksi from './page/RiwayatTransaksi';
 import KatalogProperti from './page/KatalogProperti';
+import SectionTestimoni from './components/SectionTestimoni';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/penghuni" element={<Penghuni />} />
         <Route path="/pembayaran" element={<Pembayaran />} />
         <Route path="/riwayat" element={<RiwayatTransaksi />} />
+        <Route path="/testimoni" element={<SectionTestimoni />} />
       </Routes>
     </Router>
   );

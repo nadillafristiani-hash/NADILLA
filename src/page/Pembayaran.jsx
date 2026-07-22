@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+
 export default function Pembayaran() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,9 +38,9 @@ export default function Pembayaran() {
     { id: 'bsi', jenis: 'bank', nama: 'Bank Syariah (BSI)', nomorVa: '7123-8890-1122' },
   ];
 
-  // DAFTAR QRIS DENGAN KODE & ID UNIK UNTUK TIAP E-WALLET
+  // DAFTAR QRIS DENGAN GAMBAR KHUSUS UNTUK GOPAY
   const daftarQris = [
-    { id: 'gopay', jenis: 'qris', nama: 'QRIS (GoPay)', nmid: 'ID102026883901' },
+    { id: 'gopay', jenis: 'qris', nama: 'QRIS (GoPay)', nmid: 'ID102026883901', qrImage: qrisGopayImg },
     { id: 'ovo', jenis: 'qris', nama: 'QRIS (OVO)', nmid: 'ID102026883902' },
     { id: 'shopeepay', jenis: 'qris', nama: 'QRIS (ShopeePay)', nmid: 'ID102026883903' },
     { id: 'dana', jenis: 'qris', nama: 'QRIS (DANA)', nmid: 'ID102026883904' },
@@ -51,8 +52,11 @@ export default function Pembayaran() {
     { id: 'tunai', jenis: 'cash', nama: 'Tunai di Lokasi (Check-in)', kodePay: 'BAYAR-DI-LOKASI' },
   ];
 
-  // FUNGSI MEMBUAT URL QR CODE DINAMIS SESUAI E-WALLET & TOTAL BAYAR
-  const getDynamicQrUrl = () => {
+  // FUNGSI UNTUK MENDAPATKAN GAMBAR QR (UTAMAKAN GAMBAR LOKAL JIKA ADA)
+  const getQrImageUrl = () => {
+    if (metodeAktif.qrImage) {
+      return metodeAktif.qrImage;
+    }
     const dataString = `PAYMENT-${metodeAktif.id.toUpperCase()}-${metodeAktif.nmid || 'QRIS'}-${itemTransaksi.totalBayar}`;
     return `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(dataString)}`;
   };
@@ -233,7 +237,7 @@ export default function Pembayaran() {
                 </div>
               )}
 
-              {/* PETUNJUK QRIS (BERUBAH SETIAP OPSI DIKLIK) */}
+              {/* PETUNJUK QRIS */}
               {metodeAktif.jenis === 'qris' && (
                 <div className="text-center space-y-4 py-2">
                   <p className="text-xs text-[#B48A35] font-bold">
@@ -241,10 +245,10 @@ export default function Pembayaran() {
                   </p>
                   <div className="inline-block bg-white p-4 border-4 border-[#B48A35]/40 shadow-2xl rounded-sm">
                     <img 
-                      key={metodeAktif.id} // Key memaksa gambar beranimasi/refresh saat ganti opsi
-                      src={getDynamicQrUrl()} 
+                      key={metodeAktif.id}
+                      src={getQrImageUrl()} 
                       alt={`QRIS ${metodeAktif.nama}`} 
-                      className="w-52 h-52 object-contain mx-auto"
+                      className="w-56 h-56 object-contain mx-auto rounded-sm"
                     />
                     <span className="block text-[10px] text-black font-mono font-bold mt-2">
                       NMID: {metodeAktif.nmid}
